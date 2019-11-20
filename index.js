@@ -3,7 +3,7 @@ const db = require('./db')
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const userRouter = require('./User/router')
-const dayRouter = require('./Day/router')
+const monthRouter = require('./Month/router')
 const expenseRouter = require('./Expense/router')
 
 const app = express()
@@ -13,7 +13,7 @@ const parserMiddleware = bodyParser.json()
 app.use(corsMiddleware)
 app.use(parserMiddleware)
 app.use(userRouter)
-app.use(dayRouter)
+app.use(monthRouter)
 app.use(expenseRouter)
 
 port = process.env.PORT || 4000

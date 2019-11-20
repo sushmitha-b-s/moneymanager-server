@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
-const Day = require('../Day/model')
+const Month = require('../Month/model')
 
 const Expense = db.define('expense', {
     category: {
@@ -12,10 +12,10 @@ const Expense = db.define('expense', {
     amount: {
         type: Sequelize.INTEGER
     }
-})
+}, {timestamps: false})
 
-Expense.belongsTo(Day)
-Day.hasMany(Expense)
+Expense.belongsTo(Month)
+Month.hasMany(Expense)
 
 
 module.exports = Expense

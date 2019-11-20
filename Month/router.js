@@ -1,10 +1,11 @@
 const {Router} = require('express')
 const Day = require('./model')
+const Expense = require('../Expense/model')
 
 const router = new Router()
 
 router.get('/month', (req,res,next) => {
-    Day.findAll()
+    Day.findAll({include: [Expense]})
     .then(days => {
         if(days){
             return res.status(200).send(days)
@@ -16,7 +17,7 @@ router.get('/month', (req,res,next) => {
 })
 
 router.get('/month/:monthId', (req,res,next) => {
-    Day.findByPk(req.params.monthId)
+    Day.findByPk(req.params.monthId, {include : [Expense]})
     .then(day => {
         if(day){
             return res.status(200).send(day)
@@ -33,7 +34,7 @@ router.post('/month', (req,res,next) => {
         if(day){
             return res.status(201).send(day)
         } else {
-            return res.status(404).send("Something is wrong..")
+            return res.status(404).end()
         }
     })
     .catch(next)
