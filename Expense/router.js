@@ -77,12 +77,24 @@ router.get('/percentage/:monthId', (req, res, next) => {
         const totalAmount = expense.reduce((acc,value) => {
             return acc + parseInt(value.dataValues.total)
         },0)
+        
+        const percentageCalc = expense.map(e => {
+            const percent = ((parseInt(e.dataValues.total)/totalAmount)*100).toFixed(2)
+
+            return {
+                percentage: percent,
+                category: e.dataValues.category,
+                total: parseInt(e.dataValues.total)
+            }
+        })
+        // console.log("percentagecale", percentageCalc)
 
         res.send({
-            expense: expense,
+            expense: percentageCalc,
             totalAmount: totalAmount
         })
     })
+    .catch(next)
 })
 
 module.exports = router
