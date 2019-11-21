@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
-// const User = require('../User/model')
+const User = require('../User/model')
 
 const Month = db.define('month',{
     monthoftheyear:{
@@ -13,7 +13,7 @@ const Month = db.define('month',{
     }
 }, {timestamps: false})
 
-// Day.belongsTo(User)
-// User.hasMany(Day)
+Month.belongsTo(User)
+User.hasMany(Month)
 
 module.exports = Month

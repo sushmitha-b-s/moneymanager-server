@@ -14,15 +14,17 @@ router.get('/secret-endpoint', authMiddleware, (req, res) => {
 })
 
 router.post('/signup', (req, res) => {
+    const username = req.body.username
     const email = req.body.email
     const password = req.body.password
 
-    if (!email || !password) {
+    if (!email || !password || !username) {
         res.status(400).send({
             message: 'Please supply a valid email and password'
         })
     } else {
         User.create({
+            username: req.body.username,
             email: req.body.email,
             password: bcrypt.hashSync(req.body.password, 10)
         })
@@ -63,7 +65,10 @@ router.post('/login', (req, res) => {
 
                     // 3. if the password is correct, return a JWT with the userId of the user (user.id)
                     res.send({
-                        jwt: toJWT({ userId: entity.id })
+                        jwt: toJWT({ userId: entity.id }),
+                        email: entity.email,
+                        userId: entity.id,
+                        username: entity.username
                     })
                 }
                 else {

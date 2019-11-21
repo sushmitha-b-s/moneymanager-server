@@ -1,14 +1,30 @@
 const {Router} = require('express')
-const Day = require('./model')
+const Month = require('./model')
 const Expense = require('../Expense/model')
 
 const router = new Router()
 
+// router.get('/month/:userId', (req,res,next) => {
+//     Month.findAll({
+//         include: [Expense],
+//     where: {
+//         userId: req.params.userId
+//     }})
+//     .then(months => {
+//         if(months){
+//             return res.status(200).send(months)
+//         } else {
+//             return res.status(404).send(`There are no days registered`)
+//         }
+//     })
+//     .catch(next)
+// })
 router.get('/month', (req,res,next) => {
-    Day.findAll({include: [Expense]})
-    .then(days => {
-        if(days){
-            return res.status(200).send(days)
+    Month.findAll({
+        include: [Expense]})
+    .then(months => {
+        if(months){
+            return res.status(200).send(months)
         } else {
             return res.status(404).send(`There are no days registered`)
         }
@@ -17,10 +33,10 @@ router.get('/month', (req,res,next) => {
 })
 
 router.get('/month/:monthId', (req,res,next) => {
-    Day.findByPk(req.params.monthId, {include : [Expense]})
-    .then(day => {
-        if(day){
-            return res.status(200).send(day)
+    Month.findByPk(req.params.monthId, {include : [Expense]})
+    .then(month => {
+        if(month){
+            return res.status(200).send(month)
         } else {
             return res.status(404).send(`There is no such day/month registered`)
         }
@@ -29,10 +45,10 @@ router.get('/month/:monthId', (req,res,next) => {
 })
 
 router.post('/month', (req,res,next) => {
-    Day.create(req.body)
-    .then(day => {
-        if(day){
-            return res.status(201).send(day)
+    Month.create(req.body)
+    .then(month => {
+        if(month){
+            return res.status(201).send(month)
         } else {
             return res.status(404).end()
         }
