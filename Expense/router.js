@@ -1,6 +1,6 @@
 const { Router } = require('express')
 const Expense = require('./model')
-const Day = require('../Month/model')
+const Month = require('../Month/model')
 const Sequelize = require('sequelize')
 
 const router = new Router()
@@ -18,7 +18,7 @@ router.post('/expense', (req, res, next) => {
 })
 
 router.get('/expense', (req, res, next) => {
-    Expense.findAll({ include: [Day] })
+    Expense.findAll({ include: [Month] })
         .then(expenses => {
             if (expenses) {
                 return res.status(200).send(expenses)
@@ -28,8 +28,24 @@ router.get('/expense', (req, res, next) => {
         })
 })
 
-router.get('/expense/:expenseId', (req, res, next) => {
-    Expense.findByPk(req.params.expenseId, { include: [Day] })
+router.get('/expense/:monthId', (req, res, next) => {
+    Expense.findAll({
+        where: {
+            monthId: req.params.monthId
+        },
+        include: [Month]
+    })
+        .then(expenses => {
+            if (expenses) {
+                return res.status(200).send(expenses)
+            } else {
+                return res.status(404).end()
+            }
+        })
+})
+
+router.get('/expenses/:expenseId', (req, res, next) => {
+    Expense.findByPk(req.params.expenseId, { include: [Month] })
         .then(expense => {
             if (expense) {
                 return res.status(200).send(expense)
